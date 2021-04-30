@@ -16,34 +16,35 @@
 <body>
 </body>
 <script type="text/javascript">
-//arguments由闭包返回前的参数
-  function delay1(fn, await) {
-    return () => {
-      setTimeout(() => {
-        console.log('delay1')
-        fn.apply(this, arguments)
-      }, await)
-      return await
+  var object = {
+    data: [1, 2, 3],
+    dataDouble: [1, 2, 3],
+    double: function () {
+      let text = 'double'
+      console.log(this); // object
+      return this.data.map(function (item) { // this是当前object,object调用的double
+        console.log(this);   // 传给map()的那个匿名函数没有被任一对象调用，所以是window
+        return item * 2;
+      });
+    },
+    doubleArrow: function () {
+      let text = 'doubleArrow'
+      console.log(this); // object
+      return this.dataDouble.map(item => { // this是当前object,object调用的doubleArrow
+        console.log(this);      // doubleArrow是object调用的，这就是上下文
+        return item * 2;
+      });
     }
+  };
+  object.double();
+  object.doubleArrow();
+  var arrow = ()=> {
+    console.log('arrow')
   }
-//arguments由闭包执行后传入的参数
-  function delay2(fn, await) {
-    return function () {
-      setTimeout(() => {
-        console.log('delay2')
-        fn.apply(this, arguments)
-      }, await)
-    }
-  }
-  function sayHello(name) {
-    console.log("sayHello arguments", ...arguments)
-    console.log('sayHello is ', name)
-  }
-  let delaySay1 = delay1(sayHello, 2000)
-  let delaySay2 = delay2(sayHello, 2000)
-  console.log(delaySay1('me'))
-  delaySay2('me')
-  console.log(delaySay1('me'))
+  console.log('arrow', arrow.prototype)
+  // arrow.prototype.has = function(){
+  //   console.log('has arrow')
+  // }
 </script>
 
 </html>
