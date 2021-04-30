@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0,minimum-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="shortcut icon" href="./static/favicon.ico">
+  <title></title>
+</head>
+<style type="text/css">
+</style>
+
+<body>
+</body>
+<script type="text/javascript">
+  function filterStar(string) {
+    return string.replace('*', '+')
+  }
+  function filterSpace(string) {
+    return string.replace(' ', '-')
+  }
+  function filterComma(string) {
+    return string.replace(';', ']')
+  }
+  function compose(...fns) {
+    if (fns.length === 0) return arg => arg
+    if (fns.length === 1) return fns[0]
+    return fns.reduce((a, b) => (...args) => a(b(...args)))
+  }
+  const composeString = compose(filterSpace, filterStar, filterComma)
+  console.log('composeString', composeString('12* 32;47'))
+  function testfn(...fns) {
+    return fns.map(item => { console.log(item) })
+  }
+  testfn(filterStar, filterSpace)
+</script>
+
+</html>
