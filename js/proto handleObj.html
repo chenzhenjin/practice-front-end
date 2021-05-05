@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0,minimum-scale=1,maximum-scale=1,user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title></title>
+</head>
+<style type="text/css">
+</style>
+
+<body>
+</body>
+<script type="text/javascript">
+  let a = Symbol()
+  var person = function () {
+    this.name = 'chen'
+    this[a] = 'zhenjin'
+    this.dosome = function () {
+    }
+    this.b = new Set([1, 2])
+    this.d = undefined
+  }
+  person.prototype.test = function () { }
+  var p = new person()
+  console.log(p.__proto__ === person.prototype)
+  console.log(person.prototype.constructor === person)
+  console.log(person.test, p)
+  
+  for (let item in p) {
+    console.log('for in', item)
+  }
+  console.log(Object.keys(p))
+  console.log(Reflect.ownKeys(p), p[a])
+  console.log(JSON.parse(JSON.stringify(p)))
+  console.log(Object.assign({ age: '18' }, p))
+</script>
+
+</html>
