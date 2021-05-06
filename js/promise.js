@@ -125,6 +125,34 @@ myPromise.prototype._resolve = function (value) {
   }, 0);
 };
 
+myPromise.resolve = function(value) {
+  if (value instanceof Promise) return value
+  return new Promise(resolve=>resolve(value))
+ }
+
+ myPromise.race = function(promiseList) {
+  return new Promise((resolve,reject)=>{
+   if (promiseList.length===0) return resolve()
+   promiseList.forEach(promise=>{
+    Promise.resolve(promise)
+     .then(value=>resolve(value),reason=>reject(reason))
+   })
+  })
+ }
+
+ myPromise.all = function(promiseList) {
+  return new Promise((resolve,reject)=>{
+   if (promiseList.length===0) return resolve([])
+   let result=[],count=0
+
+   promiseList.forEach((promise,index)=>{
+    Promise.resolve(promise).then(value=>{
+     result[index]=value
+     if (++count===promiseList.length) resolve(result)
+    },reason=>reject(reason))
+   })
+  })
+ }
 // function resolvePromise(promise, x, resolve, reject) {
 //   if (typeof x === 'function') {
 //     var then = x.then
